@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Account · Sentinel Exams</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<main class="page-main">
+  <div class="auth-wrap">
+    <form class="auth-card" id="signupForm" novalidate>
+      <div class="auth-seal" data-icon="brand"></div>
+      <h1 class="auth-title">Create Candidate Account</h1>
+      <p class="auth-sub">Register to take proctored certification exams.</p>
+
+      <div class="form-msg error" id="formMsg"></div>
+
+      <div class="field">
+        <label for="name">Full name</label>
+        <input type="text" id="name" autocomplete="name" required>
+      </div>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" autocomplete="email" required>
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <div class="pw-row">
+          <input type="password" id="password" autocomplete="new-password" required minlength="6">
+          <button type="button" class="pw-toggle" id="pwToggle">SHOW</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="confirm">Confirm password</label>
+        <input type="password" id="confirm" autocomplete="new-password" required>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+
+      <p class="auth-switch">Already registered? <a href="login.html">Log in</a></p>
+    </form>
+  </div>
+</main>
+
+<script src="js/icons.js"></script>
+<script src="js/auth.js"></script>
+<script>
+  if (getCurrentUser()) window.location.href = "index.html";
+
+  document.getElementById("pwToggle").addEventListener("click", (e) => {
+    const input = document.getElementById("password");
+    const showing = input.type === "text";
+    input.type = showing ? "password" : "text";
+    e.target.textContent = showing ? "SHOW" : "HIDE";
+  });
+
+  document.getElementById("signupForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const msg = document.getElementById("formMsg");
+    msg.className = "form-msg error";
+    msg.textContent = "";
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const confirm = document.getElementById("confirm").value;
+
+    if (!name || !email || !password || !confirm) {
+      msg.textContent = "Please fill in every field.";
+      msg.classList.add("show");
+      return;
+    }
+    if (!isValidEmail(email)) {
+      msg.textContent = "Please enter a valid email address.";
+      msg.classList.add("show");
+      return;
+    }
+    if (password.length < 6) {
+      msg.textContent = "Password must be at least 6 characters.";
+      msg.classList.add("show");
+      return;
+    }
+    if (password !== confirm) {
+      msg.textContent = "Passwords do not match.";
+      msg.classList.add("show");
+      return;
+    }
+
+    const result = signup({ name, email, password });
+    if (!result.ok) {
+      msg.textContent = result.message;
+      msg.classList.add("show");
+      return;
+    }
+    window.location.href = "index.html";
+  });
+</script>
+</body>
+</html>

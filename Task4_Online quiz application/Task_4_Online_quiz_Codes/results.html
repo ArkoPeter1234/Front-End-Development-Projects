@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exam Report · Sentinel Exams</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="brand"><span data-icon="brand"></span>Sentinel Exams</a>
+    <div class="nav-actions">
+      <span class="nav-user" id="navUserChip" style="display:none;"></span>
+      <button class="btn btn-danger btn-sm" id="navLogoutBtn">Log Out</button>
+    </div>
+  </div>
+</nav>
+
+<main class="page-main">
+  <div class="results-wrap">
+    <div class="results-card">
+      <p class="section-label" id="resultsCategory" style="font-family:var(--font-mono);font-size:0.78rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--steel);">Track</p>
+
+      <div class="gauge-wrap">
+        <svg width="180" height="180" viewBox="0 0 180 180">
+          <circle class="gauge-bg" cx="90" cy="90" r="76" fill="none" stroke-width="12"/>
+          <circle id="gaugeFg" class="gauge-fg" cx="90" cy="90" r="76" fill="none" stroke-width="12"/>
+        </svg>
+        <div class="gauge-center">
+          <span class="gauge-pct" id="gaugePct">0%</span>
+          <span class="gauge-label" id="gaugeLabel">0 / 0 correct</span>
+        </div>
+      </div>
+
+      <div class="verdict-row">
+        <span id="verdictIconSlot"></span>
+        <span class="verdict-name" id="verdictName">Verdict</span>
+      </div>
+      <p class="results-sub">Score and session-integrity report for this attempt.</p>
+
+      <div class="integrity-summary">
+        <h4>Session Integrity Summary</h4>
+        <div class="integrity-summary-row"><span>Focus / integrity score</span><b id="integrityScoreOut">100 / 100</b></div>
+        <div class="integrity-summary-row"><span>Major violations (tab switch, fullscreen exit)</span><b id="majorCountOut">0</b></div>
+        <div class="integrity-summary-row"><span>Minor violations (right-click, clipboard, shortcuts)</span><b id="minorCountOut">0</b></div>
+        <div class="integrity-summary-row"><span>Session ended early</span><b id="terminatedOut">No</b></div>
+        <div class="integrity-summary-row" id="terminationReasonRow" style="display:none;"><span>Reason</span><b id="terminationReasonOut"></b></div>
+      </div>
+
+      <div class="results-actions">
+        <button class="btn btn-primary" id="retakeBtn">Retake this track</button>
+        <a href="index.html" class="btn btn-ghost">Back to tracks</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">Sentinel Exams — a self-contained proctored quiz demo · client-side only</footer>
+
+<script src="js/icons.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/questions.js"></script>
+<script src="js/results.js"></script>
+<script>mountUserChip();</script>
+</body>
+</html>

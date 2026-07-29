@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sentinel Exams — Proctored Certification</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="brand"><span data-icon="brand"></span>Sentinel Exams</a>
+    <div class="nav-actions">
+      <span class="nav-user" id="navUserChip" style="display:none;"></span>
+      <button class="btn btn-danger btn-sm" id="navLogoutBtn">Log Out</button>
+    </div>
+  </div>
+</nav>
+
+<main class="page-main">
+  <section class="hero">
+    <div class="container">
+      <span class="hero-eyebrow">● Session monitoring active on every attempt</span>
+      <h1>Certification exams,<br><span>fully proctored.</span></h1>
+      <p>Pick a track below. Once you start, Sentinel watches for tab switches, clipboard use, and fullscreen exits in real time — and logs everything to your results report.</p>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="rules-banner">
+      <span class="rule-chip"><span data-icon="camera"></span> Fullscreen required</span>
+      <span class="rule-chip"><span data-icon="ban"></span> Copy / paste disabled</span>
+      <span class="rule-chip"><span data-icon="clock"></span> 40s per question, 10s second chance</span>
+      <span class="rule-chip"><span data-icon="lock"></span> Tab switch = instant submit</span>
+    </div>
+    <div style="text-align:center;margin-bottom:36px;">
+      <button class="btn btn-ghost btn-sm" id="reopenRulesBtn">View Exam Rules</button>
+    </div>
+
+    <p class="section-label" style="text-align:center;color:var(--amber-warn);font-family:var(--font-mono);font-size:0.8rem;letter-spacing:0.06em;text-transform:uppercase;">Choose a track</p>
+    <div class="grid-exams" id="examGrid"></div>
+  </div>
+</main>
+
+<footer class="site-footer">Sentinel Exams — a self-contained proctored quiz demo · client-side only</footer>
+
+<div class="overlay-warning" id="rulesModal">
+  <div class="overlay-card wide">
+    <h3>Exam Rules</h3>
+    <p style="color:var(--slate-soft);font-size:0.85rem;margin-top:-4px;">Please read before starting any exam.</p>
+    <ul class="rules-list" id="dashboardRulesList"></ul>
+    <button class="btn btn-primary btn-block" id="closeRulesBtn">I Understand</button>
+  </div>
+</div>
+
+<script src="js/icons.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/questions.js"></script>
+<script src="js/rules.js"></script>
+<script>
+  requireAuth();
+  mountUserChip();
+
+  renderRulesList("dashboardRulesList");
+  const rulesModal = document.getElementById("rulesModal");
+  document.getElementById("closeRulesBtn").addEventListener("click", () => rulesModal.classList.remove("show"));
+  document.getElementById("reopenRulesBtn").addEventListener("click", () => rulesModal.classList.add("show"));
+  // Shown automatically every time a candidate lands on the dashboard.
+  rulesModal.classList.add("show");
+
+  const grid = document.getElementById("examGrid");
+  Object.entries(EXAM_BANK).forEach(([key, cat]) => {
+    const card = document.createElement("a");
+    card.className = "exam-card";
+    card.href = `exam.html?category=${key}`;
+    card.innerHTML = `
+      <div data-icon="${cat.icon}"></div>
+      <h3>${cat.title}</h3>
+      <p>${cat.description}</p>
+      <div class="exam-meta">
+        <span>${cat.questions.length} questions in pool</span>
+        <span>Begin →</span>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+  mountSentinelIcons();
+</script>
+</body>
+</html>

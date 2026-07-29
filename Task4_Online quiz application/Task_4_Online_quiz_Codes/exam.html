@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exam · Sentinel Exams</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body oncontextmenu="return false;">
+
+<nav class="navbar">
+  <div class="container">
+    <a href="#" class="brand" onclick="return false;"><span data-icon="brand"></span>Sentinel Exams</a>
+    <div class="nav-actions">
+      <span class="nav-user" id="navUserChip" style="display:none;"></span>
+      <span class="rule-chip"><span data-icon="lock"></span> Monitoring active</span>
+    </div>
+  </div>
+</nav>
+
+<main class="page-main">
+
+  <!-- ============ PRE-EXAM RULES GATE ============ -->
+  <div class="exam-wrap-outer" id="startGate">
+    <div class="start-gate-card">
+      <div class="auth-seal" data-icon="brand"></div>
+      <h1 class="auth-title">Before you begin</h1>
+      <p class="auth-sub" id="examCategoryTagStart">Read the rules below — this attempt is fully monitored.</p>
+      <ul class="rules-list" id="startRulesList"></ul>
+      <button class="btn btn-primary btn-block" id="startExamBtn">I Understand — Start Exam</button>
+    </div>
+  </div>
+
+  <!-- ============ EXAM IN PROGRESS ============ -->
+  <div class="exam-layout" id="examCardMain" style="display:none;">
+    <div class="exam-card-main">
+      <div class="exam-top">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span class="round-badge" id="roundBadge">Round 1</span>
+          <div class="exam-progress-dots" id="progressDots"></div>
+        </div>
+        <div class="timer-ring">
+          <svg width="52" height="52" viewBox="0 0 52 52">
+            <circle class="bg" cx="26" cy="26" r="22" fill="none" stroke-width="4"/>
+            <circle id="timerFg" class="fg" cx="26" cy="26" r="22" fill="none" stroke-width="4"/>
+          </svg>
+          <span class="timer-num" id="timerNum">40</span>
+        </div>
+      </div>
+
+      <p class="exam-category-tag" id="examCategoryTag"></p>
+      <h2 class="exam-question" id="examQuestion"></h2>
+
+      <div class="options" id="optionsWrap"></div>
+
+      <div class="exam-footer-row">
+        <span class="score-live">Score: <b id="liveScore">0</b> / <span id="liveTotal">-</span></span>
+        <div style="display:flex;gap:10px;">
+          <button class="btn btn-ghost btn-sm" id="skipBtn">Skip Question →</button>
+          <a href="index.html" class="btn btn-ghost btn-sm">Exit exam</a>
+        </div>
+      </div>
+    </div>
+
+    <aside class="integrity-panel">
+      <div class="integrity-head">
+        <span class="integrity-title"><span class="integrity-dot"></span>Integrity Log</span>
+      </div>
+      <div class="focus-gauge-wrap">
+        <svg width="96" height="96" viewBox="0 0 96 96">
+          <circle class="focus-bg" cx="48" cy="48" r="40" fill="none" stroke-width="8"/>
+          <circle id="focusFg" class="focus-fg" cx="48" cy="48" r="40" fill="none" stroke-width="8"/>
+        </svg>
+        <div class="focus-center">
+          <span class="focus-num" id="focusNum">100</span>
+          <span class="focus-label">Focus</span>
+        </div>
+      </div>
+      <ul class="violation-log" id="violationLog">
+        <li class="violation-empty" id="violationEmpty">No violations recorded yet.</li>
+      </ul>
+    </aside>
+  </div>
+</main>
+
+<footer class="site-footer">Sentinel Exams — a self-contained proctored quiz demo · client-side only</footer>
+
+<div class="overlay-warning" id="overlayWarning">
+  <div class="overlay-card">
+    <h3>Session Terminated</h3>
+    <p>You left the exam environment (tab switch, window blur, or exited fullscreen). This session has been submitted immediately and flagged for review.</p>
+  </div>
+</div>
+
+<script src="js/icons.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/questions.js"></script>
+<script src="js/rules.js"></script>
+<script src="js/proctor.js"></script>
+<script src="js/exam.js"></script>
+<script>mountUserChip();</script>
+</body>
+</html>
