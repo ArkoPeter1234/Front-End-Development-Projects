@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TraceRoot — Farm-to-Export Traceability</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav-bar" aria-label="Primary">
+    <a href="#top" class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 28 28" width="28" height="28">
+          <path d="M14 2 C 8 8, 4 12, 4 18 A10 10 0 0 0 24 18 C 24 12, 20 8, 14 2 Z" fill="var(--gold)"/>
+          <path d="M14 6 L14 22" stroke="var(--forest)" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+      </span>
+      TraceRoot
+    </a>
+
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <ul class="nav-menu" id="navMenu">
+      <li><a href="#product" class="nav-link">Product</a></li>
+      <li><a href="#features" class="nav-link">Features</a></li>
+      <li><a href="#workflow" class="nav-link">How it works</a></li>
+      <li><a href="#contact" class="nav-link">Contact</a></li>
+      <li class="nav-cta-item"><a href="#contact" class="btn btn-primary btn-small">Request a demo</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="main">
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="hero-inner">
+      <div class="hero-copy reveal">
+        <p class="eyebrow">Cocoa &amp; cashew supply chains</p>
+        <h1 class="hero-title">Every bag, traced <em>from farm gate to export dock.</em></h1>
+        <p class="hero-sub">TraceRoot turns field surveys, GPS polygons and aggregation records into a single, auditable route — so your sustainability claims hold up under any buyer's audit.</p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn btn-primary">Request a demo</a>
+          <a href="#workflow" class="btn btn-ghost">See how it works</a>
+        </div>
+        <div class="hero-stats">
+          <div><strong>100%</strong><span>farm-level GPS coverage</span></div>
+          <div><strong>&lt; 24h</strong><span>field-to-dashboard sync</span></div>
+          <div><strong>0</strong><span>orphaned batches</span></div>
+        </div>
+      </div>
+
+      <div class="hero-visual reveal" aria-hidden="true">
+        <svg viewBox="0 0 460 420" class="trace-svg" id="traceSvg">
+          <!-- route line -->
+          <path id="routePath" class="route-path"
+            d="M 60 340 C 120 300, 100 230, 160 210 C 230 185, 210 120, 280 95 C 330 76, 350 60, 400 40" />
+          <!-- pulse dot travelling along the path -->
+          <circle id="routePulse" class="route-pulse" r="6"/>
+
+          <!-- nodes -->
+          <g class="node" style="--d:0s">
+            <circle cx="60" cy="340" r="9"/>
+            <text x="60" y="366">Farm</text>
+          </g>
+          <g class="node" style="--d:.4s">
+            <circle cx="160" cy="210" r="9"/>
+            <text x="160" y="196">Aggregation</text>
+          </g>
+          <g class="node" style="--d:.8s">
+            <circle cx="280" cy="95" r="9"/>
+            <text x="280" y="122">QC &amp; Weigh</text>
+          </g>
+          <g class="node" style="--d:1.2s">
+            <circle cx="400" cy="40" r="9"/>
+            <text x="367" y="26">Export</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCT STRIP -->
+  <section class="strip" id="product">
+    <div class="strip-inner reveal">
+      <p>Built for traceability &amp; sustainability teams managing smallholder cocoa and cashew networks across West Africa.</p>
+    </div>
+  </section>
+
+  <!-- COMMODITIES SHOWCASE -->
+  <section class="commodities">
+    <div class="section-head reveal">
+      <p class="eyebrow">What moves through the route</p>
+      <h2>One dashboard, two commodities</h2>
+    </div>
+
+    <div class="commodity-grid">
+
+      <figure class="commodity-card reveal">
+        <svg viewBox="0 0 200 160" class="commodity-art" aria-hidden="true">
+          <rect width="200" height="160" fill="var(--paper-dim)"/>
+          <ellipse cx="100" cy="80" rx="58" ry="66" fill="var(--gold)"/>
+          <path d="M100 18 C 78 40, 78 120, 100 142" stroke="var(--cocoa)" stroke-width="2" fill="none" opacity=".5"/>
+          <path d="M100 18 C 122 40, 122 120, 100 142" stroke="var(--cocoa)" stroke-width="2" fill="none" opacity=".5"/>
+          <g fill="var(--forest)" opacity=".9">
+            <ellipse cx="88" cy="55" rx="9" ry="13"/>
+            <ellipse cx="112" cy="58" rx="9" ry="13"/>
+            <ellipse cx="80" cy="82" rx="9" ry="13"/>
+            <ellipse cx="104" cy="86" rx="9" ry="13"/>
+            <ellipse cx="122" cy="80" rx="9" ry="13"/>
+            <ellipse cx="90" cy="110" rx="9" ry="13"/>
+            <ellipse cx="114" cy="112" rx="9" ry="13"/>
+          </g>
+        </svg>
+        <figcaption>
+          <h3>Cocoa</h3>
+          <p>Pod-level GPS at harvest, fermentation batch IDs, and moisture readings carried through to the warehouse ledger.</p>
+        </figcaption>
+      </figure>
+
+      <figure class="commodity-card reveal">
+        <svg viewBox="0 0 200 160" class="commodity-art" aria-hidden="true">
+          <rect width="200" height="160" fill="var(--paper-dim)"/>
+          <circle cx="100" cy="34" r="18" fill="var(--gold-light)"/>
+          <g stroke="var(--gold-light)" stroke-width="2">
+            <line x1="100" y1="8" x2="100" y2="0"/>
+            <line x1="122" y1="16" x2="128" y2="10"/>
+            <line x1="78" y1="16" x2="72" y2="10"/>
+          </g>
+          <rect x="30" y="96" width="140" height="10" rx="5" fill="var(--cocoa)" opacity=".55"/>
+          <g fill="var(--cocoa)">
+            <path d="M50 96 q-6 -22 12 -24 q10 2 4 16 q-2 8 -16 8Z"/>
+            <path d="M84 96 q-6 -22 12 -24 q10 2 4 16 q-2 8 -16 8Z"/>
+            <path d="M118 96 q-6 -22 12 -24 q10 2 4 16 q-2 8 -16 8Z"/>
+            <path d="M152 96 q-6 -18 10 -20 q9 2 3 14 q-2 6 -13 6Z"/>
+          </g>
+        </svg>
+        <figcaption>
+          <h3>Cashew</h3>
+          <p>Drying-mat photos and yield estimates from SurveyCTO field forms, matched to each aggregation center's intake log.</p>
+        </figcaption>
+      </figure>
+
+      <figure class="commodity-card reveal">
+        <svg viewBox="0 0 200 160" class="commodity-art" aria-hidden="true">
+          <rect width="200" height="160" fill="var(--paper-dim)"/>
+          <rect x="34" y="70" width="132" height="52" rx="3" fill="var(--forest)"/>
+          <line x1="34" y1="88" x2="166" y2="88" stroke="var(--paper-dim)" stroke-width="2" opacity=".4"/>
+          <line x1="34" y1="105" x2="166" y2="105" stroke="var(--paper-dim)" stroke-width="2" opacity=".4"/>
+          <rect x="52" y="122" width="96" height="8" fill="var(--cocoa)" opacity=".7"/>
+          <path d="M40 70 L60 32 L140 32 L160 70Z" fill="none" stroke="var(--gold)" stroke-width="2.5"/>
+          <line x1="100" y1="32" x2="100" y2="10" stroke="var(--gold)" stroke-width="2.5"/>
+          <line x1="100" y1="10" x2="140" y2="10" stroke="var(--gold)" stroke-width="2.5"/>
+        </svg>
+        <figcaption>
+          <h3>Export</h3>
+          <p>Container-level manifests generated automatically once every batch inside has a complete, verified trace.</p>
+        </figcaption>
+      </figure>
+
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features" id="features">
+    <div class="section-head reveal">
+      <p class="eyebrow">Skills built into this task</p>
+      <h2>What TraceRoot gives your team</h2>
+    </div>
+
+    <div class="feature-grid">
+      <article class="feature-card reveal">
+        <div class="feature-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 2 C7 2 3 6 3 10c0 6 9 12 9 12s9-6 9-12c0-4-4-8-9-8Zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"/></svg>
+        </div>
+        <h3>Responsive design</h3>
+        <p>Field officers open the same dashboard on a desktop in the office or a phone at the buying station — the layout adapts without losing data density.</p>
+      </article>
+
+      <article class="feature-card reveal">
+        <div class="feature-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16v4H4zM4 10h10v4H4zM4 16h16v4H4z"/></svg>
+        </div>
+        <h3>Navigation menu</h3>
+        <p>One clear path through Product, Features, Workflow and Contact — no hidden depth, so a first-time visitor finds the demo link in seconds.</p>
+      </article>
+
+      <article class="feature-card reveal">
+        <div class="feature-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M13 2 3 14h7l-1 8 11-14h-7l0-6z"/></svg>
+        </div>
+        <h3>Call-to-action buttons</h3>
+        <p>"Request a demo" repeats at the moments a buyer or ops lead is ready to act — hero, workflow, and footer — instead of once and forgotten.</p>
+      </article>
+
+      <article class="feature-card reveal">
+        <div class="feature-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 .001 20.001A10 10 0 0 0 12 2Zm1 15h-2v-2h2Zm0-4h-2V7h2Z"/></svg>
+        </div>
+        <h3>Interactive UI</h3>
+        <p>The route animates once on load, cards lift on hover, and the mobile menu slides in — small motion cues that confirm the interface is listening.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- WORKFLOW -->
+  <section class="workflow" id="workflow">
+    <div class="section-head reveal">
+      <p class="eyebrow">Task workflow</p>
+      <h2>Five steps, one landing page</h2>
+    </div>
+
+    <ol class="workflow-list">
+      <li class="workflow-step reveal">
+        <span class="step-index">01</span>
+        <div>
+          <h3>Design the layout</h3>
+          <p>A hero with a clear thesis, a features grid, a workflow timeline, and a contact section — each with one job.</p>
+        </div>
+      </li>
+      <li class="workflow-step reveal">
+        <span class="step-index">02</span>
+        <div>
+          <h3>Build responsive sections</h3>
+          <p>CSS Grid and Flexbox reflow the hero, cards and footer down to a single column below 720px.</p>
+        </div>
+      </li>
+      <li class="workflow-step reveal">
+        <span class="step-index">03</span>
+        <div>
+          <h3>Add navigation &amp; CTAs</h3>
+          <p>A sticky nav with a mobile hamburger toggle, and a primary "Request a demo" button that appears in three places.</p>
+        </div>
+      </li>
+      <li class="workflow-step reveal">
+        <span class="step-index">04</span>
+        <div>
+          <h3>Implement animations</h3>
+          <p>An on-load route trace in the hero, plus scroll-triggered reveals powered by the Intersection Observer API.</p>
+        </div>
+      </li>
+      <li class="workflow-step reveal">
+        <span class="step-index">05</span>
+        <div>
+          <h3>Optimise for mobile</h3>
+          <p>Touch-sized tap targets, a collapsing nav, and typography that scales with clamp() instead of fixed breakpoints.</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- CONTACT / CTA -->
+  <section class="cta-section" id="contact">
+    <div class="cta-inner reveal">
+      <h2>See your own supply chain traced.</h2>
+      <p>Send a note and a sample dataset — cocoa, cashew, or another commodity — and we'll map your first route within a week.</p>
+      <form class="contact-form" id="contactForm" novalidate>
+        <div class="form-row">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" required autocomplete="name">
+        </div>
+        <div class="form-row">
+          <label for="email">Work email</label>
+          <input type="email" id="email" name="email" required autocomplete="email">
+        </div>
+        <div class="form-row">
+          <label for="message">What are you tracing?</label>
+          <textarea id="message" name="message" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-wide">Request a demo</button>
+        <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <a href="#top" class="brand brand-footer">TraceRoot</a>
+    <ul class="footer-links">
+      <li><a href="#product">Product</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#workflow">How it works</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <p class="footer-note"><i>Name: Arko Peter</p></i>
+    <p class="footer-note"><i>Email: arkopeter00@gmail.com</p></i>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
