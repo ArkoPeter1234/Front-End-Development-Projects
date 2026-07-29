@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skyline — Weather Forecast</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="weather-loading">
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="sky-layer" aria-hidden="true">
+  <div class="sun-moon" id="sunMoon"></div>
+  <div class="clouds" id="clouds">
+    <span class="cloud c1"></span>
+    <span class="cloud c2"></span>
+    <span class="cloud c3"></span>
+  </div>
+  <div class="rain" id="rain" hidden></div>
+</div>
+
+<header class="top-bar">
+  <a href="#top" class="brand">Today's Weather<span class="brand-dot">.</span></a>
+  <p class="tagline">Live forecasts, wherever you are</p>
+</header>
+
+<main id="main" class="app-shell" id="top">
+
+  <!-- SEARCH -->
+  <section class="search-panel reveal">
+    <form id="searchForm" class="search-form" autocomplete="off">
+      <label for="citySearch" class="visually-hidden">Search for a city</label>
+      <input type="text" id="citySearch" name="citySearch" placeholder="Search a city — try Kumasi, London, Nairobi…" />
+      <button type="submit" class="btn btn-primary">Search</button>
+      <button type="button" id="locateBtn" class="btn btn-ghost" title="Use my current location">
+        <svg viewBox="0 0 24 24" class="icon-locate"><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="6"/></svg>
+        My location
+      </button>
+    </form>
+    <ul class="search-results" id="searchResults" hidden></ul>
+  </section>
+
+  <!-- STATUS BANNERS -->
+  <div class="status-banner" id="loadingBanner">
+    <span class="spinner" aria-hidden="true"></span> Loading forecast…
+  </div>
+  <div class="status-banner status-error" id="errorBanner" hidden></div>
+
+  <!-- CURRENT WEATHER -->
+  <section class="current-card reveal" id="currentCard" hidden>
+    <div class="current-main">
+      <p class="current-location" id="currentLocation">—</p>
+      <p class="current-datetime" id="currentDatetime">—</p>
+      <div class="current-temp-row">
+        <span class="weather-icon" id="currentIcon" aria-hidden="true"></span>
+        <span class="current-temp" id="currentTemp">—°</span>
+      </div>
+      <p class="current-condition" id="currentCondition">—</p>
+    </div>
+
+    <div class="current-details">
+      <div class="detail-item">
+        <span class="detail-label">Feels like</span>
+        <span class="detail-value" id="feelsLike">—°</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Humidity</span>
+        <span class="detail-value" id="humidity">—%</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Wind</span>
+        <span class="detail-value" id="wind">— km/h</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Precipitation</span>
+        <span class="detail-value" id="precip">—%</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOURLY STRIP -->
+  <section class="hourly-section reveal" id="hourlySection" hidden>
+    <h2>Next 24 hours</h2>
+    <div class="hourly-strip" id="hourlyStrip"></div>
+  </section>
+
+  <!-- DAILY FORECAST -->
+  <section class="daily-section reveal" id="dailySection" hidden>
+    <h2>7-day forecast</h2>
+    <div class="daily-grid" id="dailyGrid"></div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p> Today's Weather Forecast Website. Data from <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a></p>
+  <p><i>Peter Arko</i></p>
+  <p><i>Email: arkopeter00@gmail.com</i></p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
