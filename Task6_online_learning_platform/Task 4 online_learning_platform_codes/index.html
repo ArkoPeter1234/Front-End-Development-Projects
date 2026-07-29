@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DataPath Academy Pro — Learn IT skills that ship</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="navbar" id="navbar"></header>
+
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <div class="eyebrow">30 courses · 10 IT tracks</div>
+      <h1>Learn the skills that <span class="accent">ship real systems</span>, not just certificates.</h1>
+      <p>DataPath Academy Pro is a complete platform for managing courses, lessons, and student progress — built around real IT tracks in programming, cloud, data, security, and networking.</p>
+      <div class="flex gap-12">
+        <a href="courses.html" class="btn btn-primary">Browse courses</a>
+        <a href="signup.html" class="btn btn-ghost">Create free account</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><b>30</b><span>IT courses</span></div>
+        <div class="hero-stat"><b>8</b><span>industry instructors</span></div>
+        <div class="hero-stat"><b>12,400+</b><span>active learners</span></div>
+      </div>
+    </div>
+    <div>
+      <svg class="pathway-svg" viewBox="0 0 380 340" xmlns="http://www.w3.org/2000/svg">
+        <path class="pathway-line lit" d="M40 40 L160 40 L160 120 L300 120"/>
+        <path class="pathway-line lit" d="M300 120 L300 200 L120 200 L120 280 L320 280"/>
+        <path class="pathway-line" d="M120 280 L120 320"/>
+        <g class="pathway-node done"><circle cx="40" cy="40" r="16"/><text x="40" y="44" text-anchor="middle">SET</text></g>
+        <g class="pathway-node done"><circle cx="160" cy="40" r="16"/><text x="160" y="44" text-anchor="middle">CORE</text></g>
+        <g class="pathway-node done"><circle cx="300" cy="120" r="16"/><text x="300" y="124" text-anchor="middle">LAB</text></g>
+        <g class="pathway-node"><circle cx="300" cy="200" r="16"/><text x="300" y="204" text-anchor="middle">APP</text></g>
+        <g class="pathway-node"><circle cx="120" cy="200" r="16"/><text x="120" y="204" text-anchor="middle">REV</text></g>
+        <g class="pathway-node"><circle cx="120" cy="280" r="16"/><text x="120" y="284" text-anchor="middle">CAP</text></g>
+        <g class="pathway-node"><circle cx="320" cy="280" r="16"/><text x="320" y="284" text-anchor="middle">CERT</text></g>
+      </svg>
+      <p class="small text-center" style="margin-top:-10px;">Every course follows this path: foundations → core skills → applied practice → capstone certificate.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="container">
+    <div class="eyebrow">Browse by track</div>
+    <div class="grid grid-4" id="category-grid"></div>
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="container">
+    <div class="flex-between">
+      <div>
+        <div class="eyebrow">Popular right now</div>
+        <h2 style="margin-bottom:0;">Featured courses</h2>
+      </div>
+      <a href="courses.html" class="btn btn-ghost btn-sm">View all courses →</a>
+    </div>
+    <div class="grid grid-3 mt-24" id="featured-grid"></div>
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="container">
+    <div class="eyebrow">Why DataPath Pro</div>
+    <div class="grid grid-4">
+      <div class="card"><h4>Role-based access</h4><p class="small">Separate student, instructor, and admin experiences, each with the tools that role actually needs.</p></div>
+      <div class="card"><h4>Real progress tracking</h4><p class="small">Lesson-level completion, resumable courses, and a dashboard that reflects genuine progress.</p></div>
+      <div class="card"><h4>Certification on completion</h4><p class="small">Finish a course's capstone and generate a printable certificate immediately.</p></div>
+      <div class="card"><h4>Built for IT careers</h4><p class="small">Every track — from networking to machine learning — is scoped around real job skills.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container footer-grid">
+    <div>
+      <div class="brand" style="margin-bottom:10px;">DataPath Academy <span class="mono text-muted" style="font-size:.7rem;">PRO</span></div>
+      <p class="small">A complete platform for managing courses, lessons, and student progress.</p>
+    </div>
+    <div class="footer-cols">
+      <div><h5>Platform</h5><a href="courses.html">Courses</a><a href="signup.html">Sign up</a><a href="login.html">Log in</a></div>
+      <div><h5>Demo accounts</h5><span class="small text-muted mono">student@demo.dev</span><span class="small text-muted mono">instructor@demo.dev</span><span class="small text-muted mono">admin@demo.dev</span></div>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 DataPath Academy Pro. Demo platform for educational purposes.</div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/app.js"></script>
+<script>
+  dpaRenderNavbar("home");
+
+  const catIcons = { "Programming":"⌨", "Web Development":"🌐", "Data & AI":"◈", "Cloud & DevOps":"☁", "Cybersecurity":"⛨", "Networking & Systems":"⇄", "Mobile Development":"▤", "Design & UX":"✎", "Databases":"⛁", "Career & Business":"◎" };
+  document.getElementById("category-grid").innerHTML = DPA_CATEGORIES.map(cat => `
+    <a href="courses.html?category=${encodeURIComponent(cat)}" class="card" style="text-align:center;">
+      <div style="font-size:1.6rem;color:var(--cyan);margin-bottom:8px;">${catIcons[cat] || "◆"}</div>
+      <div class="small" style="font-weight:600;color:var(--text);">${cat}</div>
+      <div class="small text-muted">${dpaGetCourses().filter(c => c.category === cat).length} courses</div>
+    </a>
+  `).join("");
+
+  const featured = dpaGetCourses().filter((c, i) => [0,4,8,14,20,26].includes(i));
+  document.getElementById("featured-grid").innerHTML = featured.map(dpaCourseCardHTML).join("");
+</script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard — DataPath Academy Pro</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="navbar" id="navbar"></header>
+
+<div class="dash-shell">
+  <aside class="dash-sidebar">
+    <a href="admin.html" class="active">📊 Platform overview</a>
+    <a href="#" id="link-logout">🚪 Log out</a>
+  </aside>
+  <main class="dash-main">
+    <div class="eyebrow">Admin dashboard</div>
+    <h2 style="margin-bottom:0;">Platform overview</h2>
+
+    <div class="grid grid-4 mt-24">
+      <div class="stat-card"><b id="stat-users">0</b><span>Registered users</span></div>
+      <div class="stat-card"><b id="stat-courses">0</b><span>Live courses</span></div>
+      <div class="stat-card"><b id="stat-enrollments">0</b><span>Total enrollments</span></div>
+      <div class="stat-card"><b id="stat-instructors">0</b><span>Active instructors</span></div>
+    </div>
+
+    <div class="mt-32">
+      <h3>Courses by track</h3>
+      <div class="grid grid-4" id="category-breakdown"></div>
+    </div>
+
+    <div class="mt-32">
+      <div class="flex-between">
+        <h3 style="margin-bottom:0;">All users</h3>
+      </div>
+      <div class="card mt-16">
+        <table>
+          <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Joined</th><th></th></tr></thead>
+          <tbody id="user-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="mt-32">
+      <h3>Courses</h3>
+      <div class="card">
+        <table>
+          <thead><tr><th>Title</th><th>Category</th><th>Level</th><th>Price</th><th>Students</th><th>Rating</th></tr></thead>
+          <tbody id="course-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/app.js"></script>
+<script>
+  const admin = dpaRequireRole(["admin"]);
+  if (admin) {
+    dpaRenderNavbar("dash");
+    document.getElementById("link-logout").addEventListener("click", e => { e.preventDefault(); dpaLogout(); });
+
+    const users = dpaGetUsers();
+    const courses = dpaGetCourses();
+    const instructors = dpaGetInstructors();
+    const students = users.filter(u => u.role === "student");
+    const totalEnrollments = students.reduce((s, u) => s + Object.keys(u.enrollments || {}).length, 0);
+
+    document.getElementById("stat-users").textContent = users.length;
+    document.getElementById("stat-courses").textContent = courses.length;
+    document.getElementById("stat-enrollments").textContent = totalEnrollments;
+    document.getElementById("stat-instructors").textContent = instructors.length;
+
+    document.getElementById("category-breakdown").innerHTML = DPA_CATEGORIES.map(cat => {
+      const count = courses.filter(c => c.category === cat).length;
+      return `<div class="card"><b class="mono" style="font-family:var(--font-display);font-size:1.3rem;">${count}</b><div class="small text-muted">${cat}</div></div>`;
+    }).join("");
+
+    document.getElementById("user-table-body").innerHTML = users.map(u => `
+      <tr>
+        <td>${u.name}</td>
+        <td class="mono small">${u.email}</td>
+        <td><span class="chip active" style="cursor:default;">${u.role}</span></td>
+        <td class="small text-muted">${u.joined}</td>
+        <td>
+          ${u.role !== "admin" ? `<button class="btn btn-danger btn-sm" data-remove="${u.id}">Remove</button>` : ""}
+        </td>
+      </tr>
+    `).join("");
+
+    document.querySelectorAll("[data-remove]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const remaining = dpaGetUsers().filter(u => u.id !== btn.dataset.remove);
+        dpaSaveUsers(remaining);
+        dpaToast("User removed.");
+        btn.closest("tr").remove();
+      });
+    });
+
+    document.getElementById("course-table-body").innerHTML = courses.map(c => `
+      <tr>
+        <td><a href="course.html?id=${c.id}" style="color:var(--cyan);">${c.title}</a></td>
+        <td class="small text-muted">${c.category}</td>
+        <td><span class="badge badge-level-${c.level}">${c.level}</span></td>
+        <td>${dpaFormatPrice(c.price)}</td>
+        <td>${c.studentCount}</td>
+        <td>${c.rating} ★</td>
+      </tr>
+    `).join("");
+  }
+</script>
+</body>
+</html>

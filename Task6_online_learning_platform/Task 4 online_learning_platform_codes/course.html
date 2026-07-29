@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Course — DataPath Academy Pro</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="navbar" id="navbar"></header>
+
+<section class="section-tight" id="course-hero"></section>
+
+<section class="section-tight">
+  <div class="container">
+    <div class="grid" style="grid-template-columns: 2fr 1fr; gap:32px;">
+      <div>
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="tab-curriculum">Curriculum</button>
+          <button class="tab-btn" data-tab="tab-reviews">Reviews</button>
+          <button class="tab-btn" data-tab="tab-discussion">Discussion</button>
+        </div>
+        <div>
+          <div class="tab-panel active" id="tab-curriculum">
+            <div id="curriculum-list"></div>
+          </div>
+          <div class="tab-panel" id="tab-reviews">
+            <div id="reviews-list"></div>
+          </div>
+          <div class="tab-panel" id="tab-discussion">
+            <div class="card">
+              <form id="discussion-form">
+                <div class="field mb-0">
+                  <label for="discussion-input">Ask a question about this course</label>
+                  <textarea id="discussion-input" rows="3" placeholder="e.g. Does this module cover async/await in depth?"></textarea>
+                </div>
+                <button class="btn btn-primary btn-sm mt-16" type="submit">Post question</button>
+              </form>
+            </div>
+            <div id="discussion-list" class="mt-24"></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card" id="side-card"></div>
+        <div class="card mt-16" id="instructor-card"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="modal-overlay" id="checkout-modal">
+  <div class="modal-box">
+    <h3 id="checkout-title">Complete enrollment</h3>
+    <p class="small" id="checkout-desc">You're enrolling in this course.</p>
+    <div class="field">
+      <label for="coupon">Coupon code (optional)</label>
+      <input type="text" id="coupon" placeholder="Try WELCOME10">
+    </div>
+    <div class="flex-between mt-16">
+      <span class="text-muted small">Total</span>
+      <span class="mono" id="checkout-total" style="font-size:1.2rem;font-weight:600;"></span>
+    </div>
+    <div class="flex gap-12 mt-24">
+      <button class="btn btn-ghost btn-block" id="checkout-cancel">Cancel</button>
+      <button class="btn btn-primary btn-block" id="checkout-confirm">Confirm enrollment</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/app.js"></script>
+<script>
+  dpaRenderNavbar("courses");
+
+  const courseId = new URLSearchParams(window.location.search).get("id");
+  const course = dpaGetCourse(courseId);
+
+  if (!course) {
+    document.querySelector("section.section-tight").innerHTML = `<div class="container empty-state"><h3>Course not found</h3><a href="courses.html" class="btn btn-primary">Back to catalog</a></div>`;
+  } else {
+    renderHero();
+    renderCurriculum();
+    renderReviews();
+    renderSideCard();
+    renderInstructor();
+    renderDiscussion();
+    dpaInitTabs();
+  }
+
+  function currentEnrollment() {
+    const user = dpaCurrentUser();
+    return user && user.enrollments ? user.enrollments[courseId] : null;
+  }
+
+  function renderHero() {
+    document.getElementById("course-hero").innerHTML = `
+      <div class="container">
+        <span class="course-cat">${course.category}</span>
+        <h1 style="max-width:700px;">${course.title}</h1>
+        <p style="max-width:640px;">${course.description}</p>
+        <div class="flex gap-16" style="align-items:center;flex-wrap:wrap;">
+          <span class="stars">${dpaStars(course.rating)}</span>
+          <span class="small">${course.rating} (${course.reviewCount} reviews)</span>
+          <span class="badge badge-level-${course.level}">${course.level}</span>
+          <span class="small text-muted">${course.studentCount.toLocaleString()} students enrolled</span>
+          <span class="small text-muted">${course.hours}h total · ${course.lessonCount} lessons</span>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderCurriculum() {
+    const enrollment = currentEnrollment();
+    const completed = enrollment ? enrollment.completedLessons : [];
+    document.getElementById("curriculum-list").innerHTML = course.modules.map((mod, mi) => `
+      <div class="accordion-item ${mi === 0 ? "open" : ""}">
+        <div class="accordion-head">
+          <h4>${mod.title}</h4>
+          <span class="small text-muted mono">${mod.lessons.length} lessons</span>
+        </div>
+        <div class="accordion-body">
+          ${mod.lessons.map(lesson => `
+            <div class="lesson-row ${completed.includes(lesson.title) ? "done" : ""}" data-lesson="${lesson.title.replace(/"/g, '&quot;')}">
+              <span class="lesson-check"></span>
+              <span>${lesson.title}</span>
+              <span class="lesson-type">${lesson.type} · ${lesson.minutes}m</span>
+            </div>
+          `).join("")}
+        </div>
+      </div>
+    `).join("");
+    dpaInitAccordions();
+
+    if (enrollment) {
+      document.querySelectorAll(".lesson-row").forEach(row => {
+        row.style.cursor = "pointer";
+        row.addEventListener("click", () => toggleLesson(row.dataset.lesson));
+      });
+    }
+  }
+
+  function toggleLesson(lessonTitle) {
+    const user = dpaCurrentUser();
+    if (!user) { window.location.href = "login.html"; return; }
+    const enrollment = user.enrollments[courseId];
+    if (!enrollment) return;
+    const idx = enrollment.completedLessons.indexOf(lessonTitle);
+    if (idx >= 0) enrollment.completedLessons.splice(idx, 1);
+    else enrollment.completedLessons.push(lessonTitle);
+    dpaUpdateUser(user);
+    renderCurriculum();
+    renderSideCard();
+
+    const totalLessons = dpaAllLessonTitles(course).length;
+    if (enrollment.completedLessons.length === totalLessons) {
+      dpaToast("Course complete! Your certificate is ready.");
+      if (!user.badges.includes("Course Completed")) { user.badges.push("Course Completed"); dpaUpdateUser(user); }
+    }
+  }
+
+  function renderReviews() {
+    const reviews = dpaGetReviews(courseId);
+    document.getElementById("reviews-list").innerHTML = reviews.map(r => `
+      <div class="card mt-16">
+        <div class="flex-between">
+          <div class="flex gap-12" style="align-items:center;">
+            <div class="avatar">${r.name.split(" ").map(p => p[0]).join("")}</div>
+            <div>
+              <div style="font-weight:600;font-size:.9rem;">${r.name}</div>
+              <div class="small text-muted">${r.date}</div>
+            </div>
+          </div>
+          <span class="stars">${dpaStars(r.rating)}</span>
+        </div>
+        <p class="small mt-16 mb-0">${r.comment}</p>
+      </div>
+    `).join("") || `<p class="text-muted">No reviews yet for this course.</p>`;
+  }
+
+  function renderSideCard() {
+    const user = dpaCurrentUser();
+    const enrollment = currentEnrollment();
+    const box = document.getElementById("side-card");
+
+    if (enrollment) {
+      const progress = dpaCourseProgress(user, courseId);
+      const isComplete = progress.pct === 100;
+      box.innerHTML = `
+        <div class="eyebrow">Your progress</div>
+        <div class="progress-bar mb-0"><span style="width:${progress.pct}%"></span></div>
+        <p class="small mt-16">${progress.done} of ${progress.totalLessons} lessons complete (${progress.pct}%)</p>
+        ${isComplete
+          ? `<a href="certificate.html?course=${course.id}" class="btn btn-amber btn-block">View certificate</a>`
+          : `<button class="btn btn-primary btn-block" onclick="document.querySelector('.accordion-item').classList.add('open')">Resume course</button>`
+        }
+        <a href="dashboard.html" class="btn btn-ghost btn-block mt-16">Back to dashboard</a>
+      `;
+    } else {
+      box.innerHTML = `
+        <div class="price ${course.price === 0 ? "free" : ""}" style="font-size:1.6rem;">${dpaFormatPrice(course.price)} ${course.price > 0 ? `<span class="price-strike">₵${course.originalPrice}</span>` : ""}</div>
+        <button class="btn btn-primary btn-block mt-16" id="enroll-btn">${course.price === 0 ? "Enroll for free" : "Enroll now"}</button>
+        <ul class="small text-muted" style="padding-left:18px;margin-top:16px;">
+          <li>${course.lessonCount} lessons · ${course.hours} hours</li>
+          <li>Certificate on completion</li>
+          <li>Full lifetime access</li>
+        </ul>
+      `;
+      document.getElementById("enroll-btn").addEventListener("click", openCheckout);
+    }
+  }
+
+  function openCheckout() {
+    const user = dpaCurrentUser();
+    if (!user) { window.location.href = "login.html"; return; }
+    if (user.role !== "student") { dpaToast("Only student accounts can enroll in courses."); return; }
+    document.getElementById("checkout-desc").textContent = `Enrolling in "${course.title}"`;
+    updateCheckoutTotal();
+    document.getElementById("checkout-modal").classList.add("open");
+  }
+
+  function updateCheckoutTotal() {
+    const coupon = document.getElementById("coupon").value.trim().toUpperCase();
+    let total = course.price;
+    if (coupon === "WELCOME10" && total > 0) total = Math.round(total * 0.9);
+    document.getElementById("checkout-total").textContent = dpaFormatPrice(total);
+  }
+
+  document.getElementById("coupon").addEventListener("input", updateCheckoutTotal);
+  document.getElementById("checkout-cancel").addEventListener("click", () => document.getElementById("checkout-modal").classList.remove("open"));
+  document.getElementById("checkout-confirm").addEventListener("click", () => {
+    const user = dpaCurrentUser();
+    user.enrollments = user.enrollments || {};
+    user.enrollments[courseId] = { enrolledAt: Date.now(), completedLessons: [] };
+    if (!user.badges.includes("First Enrollment")) user.badges.push("First Enrollment");
+    dpaUpdateUser(user);
+    document.getElementById("checkout-modal").classList.remove("open");
+    dpaToast("Enrolled! Let's get started.");
+    renderCurriculum();
+    renderSideCard();
+  });
+
+  function renderInstructor() {
+    const instructor = dpaGetInstructor(course.instructorId);
+    if (!instructor) return;
+    document.getElementById("instructor-card").innerHTML = `
+      <div class="eyebrow">Instructor</div>
+      <div class="flex gap-12" style="align-items:center;">
+        <div class="avatar" style="width:44px;height:44px;font-size:.9rem;">${instructor.initials}</div>
+        <div>
+          <div style="font-weight:600;">${instructor.name}</div>
+          <div class="small text-muted">${instructor.title}</div>
+        </div>
+      </div>
+      <p class="small mt-16 mb-0">${instructor.bio}</p>
+    `;
+  }
+
+  function discussionKey() { return "dpa_discussion_" + courseId; }
+  function renderDiscussion() {
+    const posts = JSON.parse(localStorage.getItem(discussionKey()) || "[]");
+    document.getElementById("discussion-list").innerHTML = posts.length ? posts.map(p => `
+      <div class="card mt-16">
+        <div class="flex-between"><strong class="small">${p.name}</strong><span class="small text-muted">${p.date}</span></div>
+        <p class="small mt-16 mb-0">${p.text}</p>
+      </div>
+    `).join("") : `<p class="text-muted small">No questions yet. Be the first to ask.</p>`;
+  }
+
+  document.getElementById("discussion-form").addEventListener("submit", e => {
+    e.preventDefault();
+    const user = dpaCurrentUser();
+    if (!user) { window.location.href = "login.html"; return; }
+    const input = document.getElementById("discussion-input");
+    if (!input.value.trim()) return;
+    const posts = JSON.parse(localStorage.getItem(discussionKey()) || "[]");
+    posts.unshift({ name: user.name, text: input.value.trim(), date: new Date().toISOString().slice(0, 10) });
+    localStorage.setItem(discussionKey(), JSON.stringify(posts));
+    input.value = "";
+    renderDiscussion();
+    dpaToast("Question posted.");
+  });
+</script>
+</body>
+</html>

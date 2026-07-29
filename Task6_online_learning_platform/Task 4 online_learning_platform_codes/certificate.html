@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Certificate — DataPath Academy Pro</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .cert-wrap { max-width: 780px; margin: 60px auto; padding: 0 20px; }
+  .cert {
+    border: 2px solid var(--cyan); border-radius: 18px; padding: 60px 50px; text-align: center;
+    background: radial-gradient(circle at 50% 0%, rgba(34,211,238,.08), transparent 60%), var(--surface);
+    position: relative;
+  }
+  .cert::before, .cert::after {
+    content: ''; position: absolute; width: 60px; height: 60px; border: 1px solid var(--border);
+  }
+  .cert::before { top: 14px; left: 14px; border-right: none; border-bottom: none; }
+  .cert::after { bottom: 14px; right: 14px; border-left: none; border-top: none; }
+  .cert-name { font-family: var(--font-display); font-size: 2.1rem; color: var(--amber); margin: 18px 0; }
+  .cert-course { font-family: var(--font-display); font-size: 1.4rem; margin: 10px 0 24px; }
+  @media print {
+    .navbar, .no-print { display: none !important; }
+    body { background: white; color: black; }
+    .cert { border-color: #333; background: white; }
+    .cert-name, .cert-course, h4 { color: #111 !important; }
+  }
+</style>
+</head>
+<body>
+<header class="navbar no-print" id="navbar"></header>
+
+<div class="cert-wrap">
+  <div class="cert" id="cert-box"></div>
+  <div class="text-center mt-24 no-print">
+    <button class="btn btn-primary" onclick="window.print()">Print / Save as PDF</button>
+    <a href="dashboard.html" class="btn btn-ghost">Back to dashboard</a>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/app.js"></script>
+<script>
+  const user = dpaRequireRole(["student"]);
+  if (user) {
+    dpaRenderNavbar("dash");
+    const courseId = new URLSearchParams(window.location.search).get("course");
+    const course = dpaGetCourse(courseId);
+    const progress = course ? dpaCourseProgress(user, courseId) : { pct: 0 };
+
+    if (!course || progress.pct < 100) {
+      document.getElementById("cert-box").innerHTML = `<h4>Certificate not yet available</h4><p class="small">Complete every lesson in a course to unlock its certificate.</p>`;
+    } else {
+      document.getElementById("cert-box").innerHTML = `
+        <div class="eyebrow" style="justify-content:center;">Certificate of Completion</div>
+        <p class="small">This certifies that</p>
+        <div class="cert-name">${user.name}</div>
+        <p class="small">has successfully completed</p>
+        <div class="cert-course">${course.title}</div>
+        <p class="small">${course.hours} hours · ${course.lessonCount} lessons · ${course.level} level</p>
+        <p class="small mono mt-24">Issued ${new Date().toISOString().slice(0,10)} · Certificate ID: DPA-${course.id.toUpperCase()}-${user.id.slice(-5).toUpperCase()}</p>
+      `;
+    }
+  }
+</script>
+</body>
+</html>

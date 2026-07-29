@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Courses — DataPath Academy Pro</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="navbar" id="navbar"></header>
+
+<section class="section-tight">
+  <div class="container">
+    <div class="eyebrow">Full catalog</div>
+    <h2>30 IT courses across 10 tracks</h2>
+
+    <div class="card mt-24">
+      <div class="grid grid-3" style="align-items:end;">
+        <div class="field mb-0">
+          <label for="search">Search</label>
+          <input type="text" id="search" placeholder="e.g. Kubernetes, Python, security...">
+        </div>
+        <div class="field mb-0">
+          <label for="level-filter">Level</label>
+          <select id="level-filter">
+            <option value="">All levels</option>
+            <option>Beginner</option>
+            <option>Intermediate</option>
+            <option>Advanced</option>
+          </select>
+        </div>
+        <div class="field mb-0">
+          <label for="sort-by">Sort by</label>
+          <select id="sort-by">
+            <option value="popular">Most popular</option>
+            <option value="rating">Highest rated</option>
+            <option value="price-low">Price: low to high</option>
+            <option value="price-high">Price: high to low</option>
+          </select>
+        </div>
+      </div>
+      <div class="flex gap-8 mt-16" id="category-chips" style="flex-wrap:wrap;"></div>
+    </div>
+
+    <p class="small text-muted mt-24" id="results-count"></p>
+    <div class="grid grid-3" id="course-grid"></div>
+  </div>
+</section>
+
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/app.js"></script>
+<script>
+  dpaRenderNavbar("courses");
+
+  const params = new URLSearchParams(window.location.search);
+  let state = {
+    search: "",
+    category: params.get("category") || "",
+    level: "",
+    sort: "popular"
+  };
+
+  const chipsEl = document.getElementById("category-chips");
+  function renderChips() {
+    const all = ["All", ...DPA_CATEGORIES];
+    chipsEl.innerHTML = all.map(cat => {
+      const value = cat === "All" ? "" : cat;
+      const active = state.category === value;
+      return `<button class="chip ${active ? "active" : ""}" data-cat="${value}">${cat}</button>`;
+    }).join("");
+    chipsEl.querySelectorAll(".chip").forEach(chip => {
+      chip.addEventListener("click", () => { state.category = chip.dataset.cat; renderChips(); renderCourses(); });
+    });
+  }
+
+  function renderCourses() {
+    let list = dpaGetCourses();
+    if (state.category) list = list.filter(c => c.category === state.category);
+    if (state.level) list = list.filter(c => c.level === state.level);
+    if (state.search) {
+      const q = state.search.toLowerCase();
+      list = list.filter(c => c.title.toLowerCase().includes(q) || c.category.toLowerCase().includes(q) || c.description.toLowerCase().includes(q));
+    }
+    if (state.sort === "rating") list = [...list].sort((a, b) => b.rating - a.rating);
+    else if (state.sort === "price-low") list = [...list].sort((a, b) => a.price - b.price);
+    else if (state.sort === "price-high") list = [...list].sort((a, b) => b.price - a.price);
+    else list = [...list].sort((a, b) => b.studentCount - a.studentCount);
+
+    document.getElementById("results-count").textContent = `${list.length} course${list.length === 1 ? "" : "s"} found`;
+    document.getElementById("course-grid").innerHTML = list.length
+      ? list.map(dpaCourseCardHTML).join("")
+      : `<div class="empty-state" style="grid-column:1/-1;">No courses match those filters. Try clearing search or level.</div>`;
+  }
+
+  document.getElementById("search").addEventListener("input", e => { state.search = e.target.value; renderCourses(); });
+  document.getElementById("level-filter").addEventListener("change", e => { state.level = e.target.value; renderCourses(); });
+  document.getElementById("sort-by").addEventListener("change", e => { state.sort = e.target.value; renderCourses(); });
+
+  renderChips();
+  renderCourses();
+</script>
+</body>
+</html>

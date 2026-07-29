@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log in — DataPath Academy Pro</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="navbar" id="navbar"></header>
+
+<section class="section">
+  <div class="container form-card">
+    <div class="card">
+      <div class="eyebrow">Welcome back</div>
+      <h2>Log in to your account</h2>
+      <form id="login-form">
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" required placeholder="you@example.com">
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" required placeholder="••••••••">
+        </div>
+        <div id="login-error" class="small" style="color:var(--danger);margin-bottom:14px;display:none;"></div>
+        <button type="submit" class="btn btn-primary btn-block">Log in</button>
+      </form>
+      <p class="small text-center mt-24">No account? <a href="signup.html" style="color:var(--cyan);">Create one</a></p>
+      <div class="card mt-16" style="background:var(--bg-elevated);padding:14px;">
+        <p class="small mb-0" style="color:var(--text-muted);"><strong style="color:var(--text);">Demo logins</strong> — password for all: <span class="mono">demo1234</span></p>
+        <p class="small mono mb-0">student@demo.dev</p>
+        <p class="small mono mb-0">instructor@demo.dev</p>
+        <p class="small mono mb-0">admin@demo.dev</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/app.js"></script>
+<script>
+  dpaRenderNavbar("");
+  if (dpaCurrentUser()) window.location.href = "index.html";
+
+  document.getElementById("login-form").addEventListener("submit", e => {
+    e.preventDefault();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const result = dpaLogin(email, password);
+    const errBox = document.getElementById("login-error");
+    if (!result.ok) {
+      errBox.textContent = result.message;
+      errBox.style.display = "block";
+      return;
+    }
+    const dest = result.user.role === "student" ? "dashboard.html" : result.user.role === "instructor" ? "instructor.html" : "admin.html";
+    window.location.href = dest;
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — DataPath Academy Pro</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="navbar" id="navbar"></header>
+
+<div class="dash-shell">
+  <aside class="dash-sidebar">
+    <a href="dashboard.html" class="active">📊 Overview</a>
+    <a href="courses.html">🔍 Browse courses</a>
+    <a href="#" id="link-certificates">🎓 Certificates</a>
+    <a href="#" id="link-logout">🚪 Log out</a>
+  </aside>
+  <main class="dash-main">
+    <div class="flex-between">
+      <div>
+        <div class="eyebrow">Student dashboard</div>
+        <h2 id="welcome-heading" style="margin-bottom:0;">Welcome back</h2>
+      </div>
+    </div>
+
+    <div class="grid grid-4 mt-24">
+      <div class="stat-card"><b id="stat-enrolled">0</b><span>Courses enrolled</span></div>
+      <div class="stat-card"><b id="stat-completed">0</b><span>Courses completed</span></div>
+      <div class="stat-card"><b id="stat-hours">0</b><span>Hours of content</span></div>
+      <div class="stat-card"><b id="stat-streak">0</b><span>Badges earned</span></div>
+    </div>
+
+    <div class="flex-between mt-32">
+      <h3 style="margin-bottom:0;">Your courses</h3>
+    </div>
+    <div class="grid grid-3 mt-16" id="enrolled-grid"></div>
+
+    <div class="mt-32">
+      <h3>Badges</h3>
+      <div class="flex gap-12" id="badges-row" style="flex-wrap:wrap;"></div>
+    </div>
+  </main>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/app.js"></script>
+<script>
+  const user = dpaRequireRole(["student"]);
+  if (user) {
+    dpaRenderNavbar("dash");
+    document.getElementById("welcome-heading").textContent = `Welcome back, ${user.name.split(" ")[0]}`;
+    document.getElementById("link-logout").addEventListener("click", (e) => { e.preventDefault(); dpaLogout(); });
+    document.getElementById("link-certificates").addEventListener("click", (e) => {
+      e.preventDefault();
+      const completedIds = Object.keys(user.enrollments || {}).filter(id => dpaCourseProgress(user, id).pct === 100);
+      if (completedIds.length) window.location.href = `certificate.html?course=${completedIds[0]}`;
+      else dpaToast("Complete a course to unlock your first certificate.");
+    });
+
+    const enrollmentIds = Object.keys(user.enrollments || {});
+    const enrolledCourses = enrollmentIds.map(id => dpaGetCourse(id)).filter(Boolean);
+    const completedCount = enrollmentIds.filter(id => dpaCourseProgress(user, id).pct === 100).length;
+    const totalHours = enrolledCourses.reduce((s, c) => s + c.hours, 0);
+
+    document.getElementById("stat-enrolled").textContent = enrolledCourses.length;
+    document.getElementById("stat-completed").textContent = completedCount;
+    document.getElementById("stat-hours").textContent = Math.round(totalHours);
+    document.getElementById("stat-streak").textContent = (user.badges || []).length;
+
+    document.getElementById("enrolled-grid").innerHTML = enrolledCourses.length
+      ? enrolledCourses.map(course => {
+          const progress = dpaCourseProgress(user, course.id);
+          return `
+            <a href="course.html?id=${course.id}" class="course-card">
+              <div class="course-thumb">${course.title.split(" ").filter(w => /^[A-Z0-9(&]/.test(w)).slice(0,2).map(w=>w[0]).join("")}</div>
+              <div class="course-body">
+                <span class="course-cat">${course.category}</span>
+                <h3 class="course-title">${course.title}</h3>
+                <div class="progress-bar mt-8"><span style="width:${progress.pct}%"></span></div>
+                <div class="small text-muted mt-8">${progress.pct}% complete · ${progress.done}/${progress.totalLessons} lessons</div>
+                ${progress.pct === 100 ? `<span class="badge badge-level-Beginner mt-8">Certificate ready</span>` : ""}
+              </div>
+            </a>
+          `;
+        }).join("")
+      : `<div class="empty-state" style="grid-column:1/-1;">You haven't enrolled in any courses yet. <a href="courses.html" style="color:var(--cyan);">Browse the catalog →</a></div>`;
+
+    const badgeIcons = { "First Enrollment": "🚀", "Course Completed": "🏅" };
+    document.getElementById("badges-row").innerHTML = (user.badges || []).length
+      ? user.badges.map(b => `<div class="chip active">${badgeIcons[b] || "⭐"} ${b}</div>`).join("")
+      : `<p class="text-muted small">No badges yet — enroll in a course to earn your first one.</p>`;
+  }
+</script>
+</body>
+</html>
