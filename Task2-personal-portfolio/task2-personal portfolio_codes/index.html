@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Peter — Data Analyst | GIS & Agricultural Data Systems</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav-bar" aria-label="Primary">
+    <a href="#home" class="brand">Peter Arko<span class="brand-dot">.</span></a>
+
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <ul class="nav-menu" id="navMenu">
+      <li><a href="#home" class="nav-link">Home</a></li>
+      <li><a href="#about" class="nav-link">About</a></li>
+      <li><a href="#projects" class="nav-link">Projects</a></li>
+      <li><a href="#contact" class="nav-link">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="main">
+
+  <!-- HOME -->
+  <section class="hero" id="home">
+    <div class="hero-inner">
+      <div class="hero-copy reveal">
+        <p class="eyebrow">Kumasi, Ghana — Data Analyst</p>
+        <h1 class="hero-title">I turn field data into decisions<span class="accent-mark">.</span></h1>
+        <p class="hero-sub">I build data pipelines, GIS mapping tools, and reporting systems for agricultural
+          traceability and sustainability — mostly across cocoa and cashew supply chains. SQL, Python and
+          Power BI on the analysis side; GeoPandas, QGIS and SurveyCTO on the field-data side.</p>
+        <div class="hero-actions">
+          <a href="#projects" class="btn btn-primary">View projects</a>
+          <a href="#contact" class="btn btn-ghost">Get in touch</a>
+        </div>
+        <ul class="hero-tags">
+          <li>SQL</li><li>Python</li><li>Power BI</li><li>ETL Pipelines</li><li>GeoPandas</li><li>QGIS</li><li>SurveyCTO</li>
+        </ul>
+      </div>
+
+      <div class="hero-visual reveal" aria-hidden="true">
+        <svg viewBox="0 0 420 380" class="pipeline-svg">
+          <!-- raw points -->
+          <g class="raw-points">
+            <circle cx="40" cy="60" r="5"/>
+            <circle cx="60" cy="110" r="4"/>
+            <circle cx="34" cy="160" r="5"/>
+            <circle cx="58" cy="205" r="4"/>
+            <circle cx="42" cy="250" r="5"/>
+          </g>
+
+          <!-- flow lines into pipeline -->
+          <path class="flow-line" d="M45 60 C 110 70, 130 100, 170 120"/>
+          <path class="flow-line" d="M60 110 C 115 115, 135 125, 170 135" style="--delay:.15s"/>
+          <path class="flow-line" d="M34 160 C 105 155, 135 150, 170 150" style="--delay:.3s"/>
+          <path class="flow-line" d="M58 205 C 115 190, 135 170, 170 165" style="--delay:.45s"/>
+          <path class="flow-line" d="M42 250 C 110 220, 135 185, 170 178"/>
+
+          <!-- pipeline box -->
+          <rect x="170" y="105" width="70" height="90" rx="8" class="pipeline-box"/>
+          <text x="205" y="155" class="pipeline-label">ETL</text>
+
+          <!-- output bars (dashboard) -->
+          <g class="output-bars">
+            <rect x="270" y="180" width="18" height="60"/>
+            <rect x="298" y="150" width="18" height="90"/>
+            <rect x="326" y="120" width="18" height="120"/>
+            <rect x="354" y="95"  width="18" height="145"/>
+          </g>
+          <line x1="260" y1="248" x2="390" y2="248" class="baseline"/>
+
+          <!-- connecting line pipeline -> chart -->
+          <path class="flow-line-out" d="M240 150 C 250 150, 255 150, 262 150"/>
+
+          <!-- map pin accent, bottom -->
+          <g class="map-pin">
+            <path d="M330 300 C 330 285, 356 285, 356 300 C 356 314, 343 330, 343 330 C 343 330, 330 314, 330 300 Z"/>
+            <circle cx="343" cy="299" r="6" class="pin-dot"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="about-inner">
+      <div class="about-visual reveal" aria-hidden="true">
+        <div class="avatar">P</div>
+      </div>
+
+      <div class="about-copy reveal">
+        <p class="eyebrow">About</p>
+        <h2>From the field to the dashboard</h2>
+        <p>I'm a Data Analyst based in Kumasi, working on agricultural traceability, sustainability
+          reporting, and GIS-based supply chain systems for cocoa and cashew commodities. Most of my work sits
+          between two worlds: messy field data collected through SurveyCTO and mobile surveys, and the clean,
+          queryable pipelines and dashboards that operations and sustainability teams actually use.</p>
+        <p>I'm fluent in Twi as well as English, which has been useful for field-facing work and farmer
+          engagement, alongside a background in rural community training. Outside of my day-to-day role I've
+          been building small, focused web projects — from anomaly-detection tooling for survey data to
+          straightforward front-end sites like this one.</p>
+
+        <div class="skills-grid">
+          <div class="skill-group">
+            <h3>Data &amp; Analysis</h3>
+            <ul><li>SQL</li><li>Python</li><li>Power BI</li><li>ETL Pipelines</li></ul>
+          </div>
+          <div class="skill-group">
+            <h3>Geospatial</h3>
+            <ul><li>GeoPandas</li><li>QGIS</li><li>Farm-boundary mapping</li></ul>
+          </div>
+          <div class="skill-group">
+            <h3>Field Data</h3>
+            <ul><li>SurveyCTO</li><li>ODK</li><li>Enumerator QA</li></ul>
+          </div>
+          <div class="skill-group">
+            <h3>Languages</h3>
+            <ul><li>English</li><li>Twi</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="projects" id="projects">
+    <div class="section-head reveal">
+      <p class="eyebrow">Selected work</p>
+      <h2>Projects</h2>
+    </div>
+
+    <div class="project-grid">
+
+      <article class="project-card reveal">
+        <div class="project-tag-row"><span class="tag">Python</span><span class="tag">SurveyCTO</span><span class="tag">Anomaly detection</span></div>
+        <h3>Nokware</h3>
+        <p>An enumerator fraud-detection tool for agricultural field surveys. Uses Isolation Forest anomaly
+          detection on SurveyCTO/ODK paradata to flag suspicious interview patterns — submitted to the
+          AASW 2026 AgriFuture Challenge.</p>
+        <a href="#" class="project-link">View project →</a>
+      </article>
+
+      <article class="project-card reveal">
+        <div class="project-tag-row"><span class="tag">HTML/CSS/JS</span><span class="tag">Traceability</span></div>
+        <h3>FarmTrace</h3>
+        <p>A landing page concept for a farm-to-export traceability product, covering cocoa and cashew
+          supply chains — from farm registration through to export documentation.</p>
+        <a href="#" class="project-link">View project →</a>
+      </article>
+
+      <article class="project-card reveal">
+        <div class="project-tag-row"><span class="tag">HTML/CSS/JS</span><span class="tag">Marketplace UI</span></div>
+        <h3>OriginTrade</h3>
+        <p>A front-end concept for an agricultural commodities marketplace, exploring how origin and
+          traceability data could be surfaced to buyers browsing a product catalogue.</p>
+        <a href="#" class="project-link">View project →</a>
+      </article>
+
+      <article class="project-card reveal">
+        <div class="project-tag-row"><span class="tag">JavaScript</span><span class="tag">API integration</span></div>
+        <h3>Weather Dashboard</h3>
+        <p>A small dashboard pulling live weather data for a location and displaying it with simple,
+          readable visual components.</p>
+        <a href="#" class="project-link">View project →</a>
+      </article>
+
+      <article class="project-card reveal">
+        <div class="project-tag-row"><span class="tag">JavaScript</span><span class="tag">Interactive UI</span></div>
+        <h3>Data Analytics Quiz</h3>
+        <p>An interactive quiz app testing data analytics fundamentals, built to practice front-end
+          state handling without a framework.</p>
+        <a href="#" class="project-link">View project →</a>
+      </article>
+
+      <article class="project-card reveal">
+        <div class="project-tag-row"><span class="tag">Machine Learning</span><span class="tag">Interactive UI</span></div>
+        <h3>Crop Yield Prediction Using Machine Learning</h3>
+        <p>Built a machine learning model to predict crop yields using historical weather, soil, and farm management data. Trained and evaluated multiple regression algorithms to improve prediction accuracy.</p>
+        <a href="#" class="project-link">View project →</a>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact-section" id="contact">
+    <div class="contact-inner">
+      <div class="contact-copy reveal">
+        <p class="eyebrow">Get in touch</p>
+        <h2>Let's talk data.</h2>
+        <p>Open to data analyst, data engineering and GIS-adjacent roles, as well as collaboration on
+          agricultural data projects.</p>
+        <ul class="contact-details">
+          <li><strong>Location</strong><span>Kumasi- Ghana</span></li>
+          <li><strong>Email</strong><span><a href="mailto:you@example.com">arkopeter00@gmail.com</a></span></li>
+          <li><strong>LinkedIn</strong><span><a href="#">www.linkedin.com/in/peter-arko-14348a270</a></span></li>
+        </ul>
+      </div>
+
+      <form class="contact-form reveal" id="contactForm" novalidate>
+        <div class="form-row">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" required autocomplete="name">
+        </div>
+        <div class="form-row">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required autocomplete="email">
+        </div>
+        <div class="form-row">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-wide">Send message</button>
+        <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <a href="#home" class="brand brand-footer">Peter Arko<span class="brand-dot">.</span></a>
+    <ul class="footer-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <p class="footer-note">Data Analyst.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
